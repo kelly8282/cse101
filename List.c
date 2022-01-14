@@ -234,6 +234,7 @@ void insertAfter(List L, int x){
 	if(L->length > 0 && L->index >=0){
 		Node temp = newNode(x);
 		temp->next = L->cursor->next;
+		temp->pre = L->cursor;
 		L->cursor->next = temp;
 		if(temp->next != NULL){
 			temp->next->pre = temp;
@@ -272,12 +273,16 @@ void deleteBack(List L){
                         L->index = -1;
 		}
 	}
+
 }
 
 void delete(List L){
 	if(L->length >0 && L->index >= 0){
 		if(L->cursor == L->front){
 			L->front = L->cursor->next;
+		}
+		if(L->cursor == L->back){
+			L->back = L->cursor->pre;
 		}
 		else{
 			if(L->cursor->pre != NULL){
@@ -311,5 +316,6 @@ List copyList(List L){
 	}
 	return new;
 }
+
 
 
