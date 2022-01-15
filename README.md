@@ -10,22 +10,16 @@
 
 ##Files
 
-### List.h
-A header file that specifices the interface for my list.c file.
+List.h- A header file that specifices the interface for my list.c file.  
 
-###List.c
-A source file for implementing my doubly linked list ADT.
+List.c- A source file for implementing my doubly linked list ADT.  
 
-###ListClient.c
-Test function for my List.c file.
+ListClient.c- Test function for my List.c file.  
 
-###Lex.c
-A source file that is my main function and every other function needed for my program.
+Lex.c- A source file that is my main function and every other function needed for my program.  
 
-###Makefile
-This allows us to use clang and compile our program.
+Makefile- This allows us to use clang and compile our program.  
 
-###README.md
-In markdown format, it tells us how to run the program and how the program was made.
+README.md- In markdown format, it tells us how to run the program and how the program was made.  
 
 
