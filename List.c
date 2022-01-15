@@ -279,10 +279,10 @@ void deleteBack(List L){
 void delete(List L){
 	if(L->length >0 && L->index >= 0){
 		if(L->cursor == L->front){
-			L->front = L->cursor->next;
+			deleteFront(L);
 		}
-		if(L->cursor == L->back){
-			L->back = L->cursor->pre;
+		else if(L->cursor == L->back){
+			deleteBack(L);
 		}
 		else{
 			if(L->cursor->pre != NULL){
@@ -291,10 +291,11 @@ void delete(List L){
 			if(L->cursor->next != NULL){
 				L->cursor->next->pre = L->cursor->pre;
 			}
+			freeNode(&L->cursor);
 			L->cursor = NULL;
+			L->index = -1;
+			L->length = L->length -1;
 		}
-		L->index = -1;
-		L->length = L->length -1;
 	}
 }
 
