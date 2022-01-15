@@ -8,8 +8,7 @@
 -->
 # PA 1: Introduction to Data Structures and Algorithms
 
-##Files
-
+## File Included
 List.h- A header file that specifices the interface for my list.c file.  
 
 List.c- A source file for implementing my doubly linked list ADT.  
