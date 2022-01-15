@@ -8,23 +8,24 @@
 -->
 # PA 1: Introduction to Data Structures and Algorithms
 
-#Files
-## List.h
+##Files
+
+### List.h
 A header file that specifices the interface for my list.c file.
 
-##List.c
+###List.c
 A source file for implementing my doubly linked list ADT.
 
-##ListClient.c
+###ListClient.c
 Test function for my List.c file.
 
-##Lex.c
+###Lex.c
 A source file that is my main function and every other function needed for my program.
 
-##Makefile
+###Makefile
 This allows us to use clang and compile our program.
 
-##README.md
+###README.md
 In markdown format, it tells us how to run the program and how the program was made.
 
 
