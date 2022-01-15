@@ -1,13 +1,14 @@
-
-#/**********************************************************************************
+<!--
+#**********************************************************************************
 # Kelly Liu, kliu80
 # 2022 Winter CSE101 PA1
 # MAKEFILE
 # In markdown format, it tells us how to run the program and how the program was made.
-#*********************************************************************************/
-
+*********************************************************************************/
+-->
 # PA 1: Introduction to Data Structures and Algorithms
 
+#Files
 ## List.h
 A header file that specifices the interface for my list.c file.
 

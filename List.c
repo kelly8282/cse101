@@ -1,3 +1,11 @@
+/*********************************************************************************
+* Kelly Liu, kliu80
+* 2022 Winter CSE101 PA1
+* List.c
+* This is my List ADT where we have a cursor used for iteration.
+*********************************************************************************/
+
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,6 +43,8 @@ void freeNode(Node *pN){
 	}
 }
 
+// Creates and returns a new empty List.
+
 List newList(void){
 	List L= malloc(sizeof(ListObj));
 	L->front = NULL;
@@ -44,6 +54,8 @@ List newList(void){
 	L->index = -1;
 	return L;
 }
+// Frees all heap memory associated with *pL, and sets
+ // *pL to NULL.
 
 void freeList(List *pL){
 	if(pL!=NULL && *pL!=NULL){
@@ -57,10 +69,12 @@ void freeList(List *pL){
 	*pL = NULL;
 	}
 }
+ // Returns the number of elements in L.
 
 int length(List L){
 	return L->length;
 }
+// Returns index of cursor element if defined, -1 otherwise.
 
 int index(List L){
 	if(L->index >= 0 ){
@@ -70,6 +84,7 @@ int index(List L){
 		return -1;
 	}
 }
+// Returns front element of L. Pre: length()>0
 
 int front(List L){
 	if(L->length > 0){
@@ -79,6 +94,7 @@ int front(List L){
 		return -1;
 	}
 }
+// Returns back element of L. Pre: length()>0
 
 int back(List L){
 	if(L->length > 0){
@@ -88,7 +104,7 @@ int back(List L){
 		return -1;
 	}
 }
-
+// Returns cursor element of L. Pre: length()>0, index()>=0
 int get(List L){
 	if(L->length > 0 && L->index >= 0){
 		return L->cursor->data;
@@ -97,6 +113,8 @@ int get(List L){
 		return -1;
 	}
 }
+// Returns true iff Lists A and B are in same
+ // state, and returns false otherwise.
 
 bool equals(List A, List B){
 	bool final = true;
@@ -116,6 +134,7 @@ bool equals(List A, List B){
 	}
 	return final;
 }
+// Resets L to its original empty state.
 
 void clear(List L){
 	while(L->front != NULL){
@@ -127,19 +146,23 @@ void clear(List L){
 	L->index = -1;
 	L->cursor = NULL;
 }
-
+// Overwrites the cursor element’s data with x.
+ // Pre: length()>0, index()>=0
 void set(List L, int x){
 	if(L->length > 0 && L->index >= 0){
 		L->cursor->data = x;
 	}
 }
-
+// If L is non-empty, sets cursor under the front element,
+ // otherwise does nothing.
 void moveFront(List L){
 	if(L->length >0){
 		L->cursor = L->front;
 		L->index = 0;
 	}
 }
+// If L is non-empty, sets cursor under the back element,
+ // otherwise does nothing.
 
 void moveBack(List L){
 	if(L->length > 0 ){
@@ -147,7 +170,10 @@ void moveBack(List L){
 		L->index = L->length-1;
 	}
 }
-
+// If cursor is defined and not at front, move cursor one
+ // step toward the front of L; if cursor is defined and at
+ // front, cursor becomes undefined; if cursor is undefined
+ // do nothing
 void movePrev(List L){
 	if(L->cursor != NULL && L->cursor == L->front){
 		L->cursor = NULL;
@@ -158,7 +184,10 @@ void movePrev(List L){
 		L->index= L->index -1;
 	}	
 }
-
+// If cursor is defined and not at back, move cursor one
+ // step toward the back of L; if cursor is defined and at
+ // back, cursor becomes undefined; if cursor is undefined
+ // do nothing
 void moveNext(List L){
 	if(L->index >= 0){
         	if(L->cursor != NULL && L->cursor == L->back ){
@@ -171,6 +200,8 @@ void moveNext(List L){
 		}
 	}
 }
+// Insert new element into L. If L is non-empty,
+ // insertion takes place before front element.
 
 void prepend(List L, int x){
 	Node temp = newNode(x);
@@ -188,7 +219,8 @@ void prepend(List L, int x){
 		L->index = 0;
 	}
 }
-
+// Insert new element into L. If L is non-empty,
+ // insertion takes place after back element.
 void append(List L, int x){
 	Node temp = newNode(x);
 	if(L->length > 0){
@@ -208,7 +240,8 @@ void append(List L, int x){
 		L->index = 0;
 	}
 }
-
+// Insert new element before cursor.
+ // Pre: length()>0, index()>=0
 
 void insertBefore(List L, int x){
 	if(L->length >0 && L->index >= 0){
@@ -229,7 +262,8 @@ void insertBefore(List L, int x){
 		L->length = L->length + 1;
 	}
 }
-
+// Insert new element after cursor.
+ // Pre: length()>0, index()>=0
 void insertAfter(List L, int x){
 	if(L->length > 0 && L->index >=0){
 		Node temp = newNode(x);
@@ -246,35 +280,54 @@ void insertAfter(List L, int x){
 
 	}
 }
-
+// Delete the front element. Pre: length()>0
 void deleteFront(List L){
 	if(L->length > 0 ){
-                Node temp= L->front->next;
-                freeNode(&L->front);
-		L->front = temp;
-                L->length = L->length -1;
-		if(L->index != 0){
+		if(L->length != 1){
+			Node temp = L->front->next;
+			L->front = temp;
+                	freeNode(&L->front->pre);
+                	L->length = L->length -1;
 			L->index = L->index -1;
 		}
 		else{
+			freeNode(&L->front);
+			L->front = NULL;
+			L->back = NULL;
+			L->cursor = NULL;
+			L->length = L->length -1;
 			L->index = -1;
 		}
 	}
 }
+// Delete the back element. Pre: length()>0
 
 void deleteBack(List L){
 	if(L->length > 0){
-		Node temp = L->back->pre;
-		freeNode(&L->back);
-		L->back = temp;
-		L->length = L->length -1;
-		if(L->index == L->length){
-			L->cursor = NULL;
-                        L->index = -1;
+		if(L->length != 1){
+			Node temp = L->back->pre;
+			L->back = temp;
+			freeNode(&L->back->next);
+			L->length = L->length -1;
+			if(L->index == L->length){
+				L->cursor = NULL;
+                        	L->index = -1;
+			}
+		}
+		else{
+			freeNode(&L->back);
+			L->front = NULL;
+                        L->back = NULL;
+                        L->cursor = NULL;
+			L->length = L->length - 1;
+			L->index = -1;
 		}
 	}
 
 }
+
+// Delete cursor element, making cursor undefined.
+ // Pre: length()>0, index()>=0
 
 void delete(List L){
 	if(L->length >0 && L->index >= 0){
@@ -299,6 +352,10 @@ void delete(List L){
 	}
 }
 
+// Prints to the file pointed to by out, a
+ // string representation of L consisting
+ // of a space separated sequence of integers,
+// with front on left.
 
 void printList(FILE *out, List L){
 	Node temp = L->front;
@@ -307,6 +364,10 @@ void printList(FILE *out, List L){
 		temp = temp->next;
 	}
 }
+// Returns a new List representing the same integer
+ // sequence as L. The cursor in the new list is undefined,
+// regardless of the state of the cursor in L. The state
+// of L is unchanged.
 
 List copyList(List L){
 	List new = newList();

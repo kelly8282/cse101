@@ -1,3 +1,11 @@
+/*********************************************************************************
+* Kelly Liu, kliu80
+* 2022 Winter CSE101 PA1
+* Lex.c
+* This is my main function List.h and List.c is exported into this file. It will take
+* an input and then print it to an output file in lexicographic order.
+*********************************************************************************/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
@@ -31,11 +39,14 @@ int main(int argc, char * argv[]){
       exit(1);
    }
 
+   //count the lines in file
    line_count = 0;
    while( fgets(line, MAX_LEN, in) != NULL)  {
       line_count++;
 
    }
+
+   //create string array
    char readline[BLOCK];
    char **rawr;
    rawr = (char **) calloc(line_count,sizeof(char *));
@@ -46,6 +57,9 @@ int main(int argc, char * argv[]){
 	rawr[i] = malloc((strlen(readline) +1)*sizeof(char*));
         strcpy(rawr[i],readline); //duplicate the line into cities so it doesn't get overwritten
     }
+
+   //Create a List whose elements are the indices of the above string array. These indices should be arranged
+  //in an order that indirectly sorts the array. 
    List L = newList();
    append(L,0);
    for(uint32_t i = 1; i <line_count; i ++){
@@ -61,10 +75,12 @@ int main(int argc, char * argv[]){
 	}
 
    }
+   //Use the List constructed in (3) to print the array in alphabetical order to the output file.
   for(moveFront(L); index(L) >= 0; moveNext(L)){
 	  fprintf(out,"%s\n", rawr[get(L)]);
 }
 
+//free and clear everything
  for (uint32_t i = 0; i < line_count; i++) {
         free(rawr[i]);
     }

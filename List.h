@@ -1,5 +1,15 @@
+/*********************************************************************************
+* Kelly Liu, kliu80
+* 2022 Winter CSE101 PA1
+* List.h
+* A header file that specifies the interface for list.c
+*********************************************************************************/
+
+
 #pragma once
 #include <stdbool.h>
+
+typedef struct ListObj* List;
 
 // Constructors-Destructors ---------------------------------------------------
 List newList(void); // Creates and returns a new empty List.
@@ -29,7 +39,7 @@ void moveNext(List L); // If cursor is defined and not at back, move cursor one
  // step toward the back of L; if cursor is defined and at 
  // back, cursor becomes undefined; if cursor is undefined 
  // do nothing
-3
+
 void prepend(List L, int x); // Insert new element into L. If L is non-empty, 
  // insertion takes place before front element.
 void append(List L, int x); // Insert new element into L. If L is non-empty, 
