@@ -1,6 +1,6 @@
 /********************************************************************************
 * Kelly Liu, kliu80
-* 2022 Winter CSE101 PA1
+* 2022 Winter CSE101 PA2
 * Graph.c
 * This is my graph ADT where we use BFS to find the shortest path possible.
 *********************************************************************************/
@@ -13,6 +13,8 @@
 #include "List.h"
 #include "Graph.h"
 
+
+//creates my GraphObj
 typedef struct GraphObj{	
 	int *color;
 	int *parent;
@@ -23,6 +25,8 @@ typedef struct GraphObj{
 	int start;
 }GraphObj;
 
+
+//allocating all my memory and return my Graph
 Graph newGraph(int n){
 	Graph G = malloc(sizeof(GraphObj));
 	G->color = (int *)calloc(n+1,sizeof(int));
@@ -39,6 +43,8 @@ Graph newGraph(int n){
 
 }
 
+
+//frees all heap memory associated with *pG and sets *pG to  NULL
 void freeGraph(Graph *pG){
 	if(pG!= NULL && *pG != NULL){
 		for(uint32_t i = 1; i <= (*pG)->order; i++){
@@ -52,17 +58,21 @@ void freeGraph(Graph *pG){
 		*pG = NULL;
 	}	
 }
-
+//return Order
 int getOrder(Graph G){
 	return G->order;
 }
 
+
+//return size
 int getSize(Graph G){
 	return G->size;
 }
 
+
+//return my source function if it exists, else return NIL
 int getSource(Graph G){
-	if(G->start >0){
+	if(G->start >= 0){
 		return G->start;
 	}
 	else{
@@ -70,9 +80,9 @@ int getSource(Graph G){
 	}
 }
 
-
+//return my parent vertex to my u if it exists, else return NIL
 int getParent(Graph G, int u){
-	if( u >= 1 && u <= getOrder(G)){		
+	if(G->start >= 0 && (u>=1 && u<= getOrder(G))){	
 		return G->parent[u];
 	}
 	else{
@@ -80,8 +90,9 @@ int getParent(Graph G, int u){
 	}
 }
 
+//returns my distance from my soruce to my u if exists, else return INF
 int getDist(Graph G, int u){
-	if(u>= 1 && u <= getOrder(G)){
+	if(G->start >= 0 && (u >= 1 && u <= getOrder(G))){
 		return G->distance[u];
 	}
 	else{
@@ -89,38 +100,58 @@ int getDist(Graph G, int u){
 	}
 }
 
+
+//appends to the List L the vertices of a shortest path in G from source to u, or appends to L the
+//value NIL if no such path exists
 void getPath(List L, Graph G, int u){
+	int empty = 0;
+	if(length(L) != 0){
+		empty = 1;
+	}
 	if(getDist(G,u) >= 0 && getSource(G) != NIL){
 		List bla = newList();
-		moveFront(bla);
-		append(bla,getSource(G));
-		append(L,get(bla));
-		moveNext(bla);
 		while(u!= getSource(G)){
-			append(bla,u);
-			append(L,get(bla));
-			moveNext(bla);
+			prepend(bla,u);
+			moveFront(bla);
+			prepend(L,get(bla));
+			movePrev(bla);
 			u = getParent(G,u);
+		}
+		if(getSource(G) == u && empty != 0){
+			append(bla,getSource(G));
+			moveBack(bla);
+			append(L,get(bla));
+		}
+		else{
+			prepend(bla,getSource(G));
+                	moveFront(bla);
+                	prepend(L,get(bla));
 		}
 		freeList(&bla);
 	}
 	else{
 		List non = newList();
 		append(non,NIL);
+		moveFront(non);
 		append(L,get(non));
 		freeList(&non);
 	}
 }
 
+
+//deletes all edges of G, restoring it to its
+//original (no edge) state
 void makeNull(Graph G){
-	for(uint32_t i = 0; i < G->order+1; i++){
+	for(uint32_t i = 1; i < G->order+1; i++){
 		clear(G->neighbors[i]);
 	}
 	G->size = 0;
 	G->start = -1;
 }
 
-
+//inserts a new
+//edge joining u to v, i.e. u is added to the adjacency List of v, 
+//and v to the adjacency List of u.
 void addEdge(Graph G, int u , int v){
 	if ( u>=1 && u <= getOrder(G)&& v>=1 && v<=getOrder(G) ){
 		addArc(G,u,v);
@@ -129,9 +160,13 @@ void addEdge(Graph G, int u , int v){
 	}
 }
 
+
+//inserts a new directed
+//edge from u to v, i.e. v is added to the adjacency List of u 
+//(but not u to the adjacency List of v)
 void addArc(Graph G, int u , int v){
 	if ( u >=1 && u<= getOrder(G)&& v>=1 && v<= getOrder(G)){
-			 moveBack(G->neighbors[u]);
+			moveBack(G->neighbors[u]);
 	   		while(index(G->neighbors[u])>=0  && get(G->neighbors[u])>v){
 		   		movePrev(G->neighbors[u]);
 			}
@@ -145,6 +180,9 @@ void addArc(Graph G, int u , int v){
 	}
 }
 
+
+//runs the BFS algorithm on the Graph G with source s, setting the color,
+//distance, parent, and source fields of G accordingly
 void BFS(Graph G, int s){
 	for(uint32_t i = 0; i < G->order+1; i ++){
 		if(i != s){
@@ -170,7 +208,7 @@ void BFS(Graph G, int s){
 			uint32_t bla = get(G->neighbors[x]);
 			if(G->color[bla] == 0){
 				G->color[bla] = 1;
-				G->distance[bla] = G->distance[bla] + 1;
+				G->distance[bla] = G->distance[x] + 1;
 				G->parent[bla] = x;
 				append(temp,bla);
 			}
@@ -180,6 +218,10 @@ void BFS(Graph G, int s){
 	}
 	freeList(&temp);
 }
+
+
+//prints the adjacency
+//list representation of G to the file pointed to by out
 void printGraph(FILE* out, Graph G){
     for(uint32_t i = 1; i < G->order+1; i++){
         fprintf(out, "%u: ", i);

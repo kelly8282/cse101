@@ -1,6 +1,6 @@
 /*********************************************************************************
 * Kelly Liu, kliu80
-* 2022 Winter CSE101 PA1
+* 2022 Winter CSE101 PA2
 * List.c
 * This is my List ADT where we have a cursor used for iteration.
 *********************************************************************************/
