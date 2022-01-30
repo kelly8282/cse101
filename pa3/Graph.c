@@ -1,6 +1,6 @@
 /********************************************************************************
 * Kelly Liu, kliu80
-* 2022 Winter CSE101 PA2
+* 2022 Winter CSE101 PA3
 * Graph.c
 * This is my graph ADT where we use BFS to find the shortest path possible.
 *********************************************************************************/
@@ -80,7 +80,7 @@ int getParent(Graph G, int u){
 		return NIL;
 	}
 }
-
+//return my discover vertex to my u if it exists, else return NIL
 int getDiscover(Graph G, int u){
         if (u>=1 && u<= getOrder(G)){
                 return G->discover[u];
@@ -90,6 +90,7 @@ int getDiscover(Graph G, int u){
         }
 }
 
+//return my finish vertex to my u if it exists, else return NIL
 int getFinish(Graph G, int u){
         if (u>=1 && u<= getOrder(G)){
                 return G->finish[u];
@@ -131,6 +132,7 @@ void addArc(Graph G, int u , int v){
 	}
 }
 
+//private function used to recursively set vertexes to black while running my DFS
 void Visit(Graph G, int x, List s){
         G->discover[x] = ++(G->time);
         G->color[x] = 1;
@@ -148,6 +150,8 @@ void Visit(Graph G, int x, List s){
         G->finish[x] = ++(G->time);
 }
 
+//DFS search implented. Initially setting everything to 0 or NIL and then slowly traversing through everything calling 
+//Visit when need be. Storing the result of our List to s
 void DFS(Graph G, List s){
 	if(length(s) == G->order){
 		List old = copyList(s);
@@ -170,7 +174,7 @@ void DFS(Graph G, List s){
 	}
 }
 
-
+//Transpoing the graph to flipping everything 
 Graph transpose(Graph G){
 	Graph rawr = newGraph(G->order);
 	for(int i = 1; i <G->order + 1; i++){
@@ -184,6 +188,7 @@ Graph transpose(Graph G){
 	return rawr;
 }
 
+//Copy graph, make a complete copy of our graph 
 Graph copyGraph(Graph G){
 	Graph rawr = newGraph(G->order);
 	for(int i = 1; i <G->order + 1; i++){
