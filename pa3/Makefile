@@ -30,11 +30,17 @@ FindComponents : FindComponents.o $(BASE_OBJECTS)
 GraphClient : GraphClient.o $(BASE_OBJECTS)
 	$(LINK) GraphClient GraphClient.o $(BASE_OBJECTS) -g
 
+GraphTest : GraphTest.o $(BASE_OBJECTS)
+	$(LINK) GraphTest GraphTest.o $(BASE_OBJECTS) -g
+
 FindComponents.o : FindComponents.c $(HEADERS)
 	$(COMPILE) FindComponents.c
 
 GraphClient.o : GraphClient.c $(HEADERS)
 	$(COMPILE) GraphClient.c -g
+
+GraphTest.o : GraphTest.c $(HEADERS)
+	$(COMPILE) GraphTest.c -g
 
 $(BASE_OBJECTS) : $(BASE_SOURCES) $(HEADERS)
 	$(COMPILE) $(BASE_SOURCES)
