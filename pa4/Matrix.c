@@ -173,18 +173,19 @@ void changeEntry(Matrix M, int i, int j, double x) {
       insertBefore(L, E);
       return;
     } 
-    else {
+    else{
       if (index(L) + 1 == length(L)) {
         if (x == 0){
           return;
-	{
+	 }
         Entry E = newEntry(j, x);
         insertAfter(L, E);
         return;
       }
-      moveNext(L);
+      moveNext(L);   
     }
   }
+     
   fprintf(stderr, "ERROR: connect didn't change Entry\n");
   exit(EXIT_FAILURE);
 }
