@@ -40,7 +40,7 @@ Entry newEntry(int col, double val) {
 Matrix newMatrix(int n) {
   Matrix M = malloc(sizeof(MatrixObj));
   M->entries = calloc(n + 1, sizeof(List));
-  for (int i = 1; i <= n; i++) { 
+  for (int i = 1; i < n+1; i++) { 
     M->entries[i] = newList();
   }
   M->size = n;
@@ -87,7 +87,11 @@ int NNZ(Matrix M) {
 }
 // Return true (1) if matrices A and B are equal, false (0) otherwise.
 int equals(Matrix A, Matrix B) {
-  if (size(A) != size(B)) {
+  bool meow = false;
+  if(size(A) == size(B)){
+	  meow = true;
+  }
+  if (meow == false) {
     return 0;
   }
   bool istrue = true;
@@ -197,7 +201,7 @@ void changeEntry(Matrix M, int i, int j, double x) {
 // Returns a reference to a new Matrix object having the same entries as A.
 Matrix copy(Matrix A) {
   Matrix C = newMatrix(size(A));
-  for (int a = 1; a <= size(A); a++) {
+  for (int a = 1; a < size(A)+1; a++) {
     List L = A->entries[a];
     moveFront(L);
     if (length(L) > 0) {
