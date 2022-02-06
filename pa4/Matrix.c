@@ -40,7 +40,7 @@ Entry newEntry(int col, double val) {
 Matrix newMatrix(int n) {
   Matrix M = malloc(sizeof(MatrixObj));
   M->entries = calloc(n + 1, sizeof(List));
-  for (int i = 1; i <= n; i++) { // create array of lists
+  for (int i = 1; i <= n; i++) { 
     M->entries[i] = newList();
   }
   M->size = n;
@@ -60,7 +60,7 @@ void freeEntry(Entry *pE) {
 void freeMatrix(Matrix *pM) {
   if (pM != NULL && *pM != NULL) {
     makeZero(*pM);
-    for (int i = 1; i <= size(*pM); i++) {
+    for (int i = 1; i < size(*pM)+1; i++) {
       List L = (*pM)->entries[i];
       freeList(&L);
     }
@@ -91,17 +91,24 @@ int equals(Matrix A, Matrix B) {
     return 0;
   }
   bool istrue = true;
-  for (int i = 1; i <= size(A); i++) {
+  for (int i = 1; i < size(A)+1; i++) {
     List AList = A->entries[i];
     List BList = B->entries[i];
-    if (length(AList) != length(BList)) { 
+    bool meow;
+    if(length(AList) == length(BList)){
+	    meow = true;
+	   }
+    else{
+	    meow = false;
+	   }
+    if (meow == false) { 
       return 0;
     }
     if (length(AList) > 0 && length(BList) > 0 &&
-        length(AList) == length(BList)) {
+        meow == true) {
       moveFront(AList);
       moveFront(BList);
-      while (index(AList) != -1) {
+      while (index(AList) >0) {
         if (((Entry)get(AList))->col != ((Entry)get(BList))->col) {
           istrue = false;
           break;
@@ -139,17 +146,16 @@ void makeZero(Matrix M) {
 // Changes the ith row, jth column of M to the value x.
 // Pre: 1<=i<=size(M), 1<=j<=size(M)
 void changeEntry(Matrix M, int i, int j, double x) {
-  if (!(1 <= i && i <= size(M) && 1 <= j && j <= size(M))) {
-    fprintf(stderr, "error\n");
-    return;
+  if( i<1 || i > size(M) || j <1 || j >size(M)){
+	  return;
   }
   List L = M->entries[i];
   if (length(L) == 0) { 
-    if (x == 0){
+    if (x != 0){
+      Entry E = newEntry(j,x);
+      append(L,E);
       return;
      }
-    Entry E = newEntry(j, x);
-    append(L, E);
     return;
   }
   moveFront(L);
@@ -166,11 +172,11 @@ void changeEntry(Matrix M, int i, int j, double x) {
       return;
     } 
     else if (j < ((Entry)get(L))->col) {
-      if (x == 0){
-        return;
+      if (x != 0){
+        Entry E = newEntry(j,x);
+	insertBefore(L,E);
+	      return;
 	}
-      Entry E = newEntry(j, x);
-      insertBefore(L, E);
       return;
     } 
     else{
@@ -186,18 +192,19 @@ void changeEntry(Matrix M, int i, int j, double x) {
     }
   }
      
-  fprintf(stderr, "ERROR: connect didn't change Entry\n");
-  exit(EXIT_FAILURE);
+  exit(-1);
 }
 // Returns a reference to a new Matrix object having the same entries as A.
 Matrix copy(Matrix A) {
   Matrix C = newMatrix(size(A));
   for (int a = 1; a <= size(A); a++) {
     List L = A->entries[a];
+    moveFront(L);
     if (length(L) > 0) {
-      for (moveFront(L); index(L) != -1; moveNext(L)) {
+      for (int j = 0; j<length(L); j++) {
         Entry e = get(L);
         changeEntry(C, a, e->col, e->val);
+	moveNext(L);
       }
     }
   }
@@ -207,11 +214,13 @@ Matrix copy(Matrix A) {
 // of A.
 Matrix transpose(Matrix A) {
   Matrix B = newMatrix(size(A));
-  for (int i = 1; i <= size(A); i++) {
+  for (int i = 1; i <size(A)+1; i++) {
     List L = A->entries[i];
+    moveFront(L);
     if (length(L) > 0) {
-      for (moveFront(L); index(L) != -1; moveNext(L)) {
+      for (int j = 0; j<length(L); j++) {
         changeEntry(B, ((Entry)get(L))->col, i, ((Entry)get(L))->val);
+	moveNext(L);
       }
     }
   }
@@ -221,11 +230,13 @@ Matrix transpose(Matrix A) {
 // Returns a reference to a new Matrix object representing xA
 Matrix scalarMult(double x, Matrix A) {
   Matrix B = newMatrix(size(A));
-  for (int i = 1; i <= size(A); i++) {
+  for (int i = 1; i < size(A)+1; i++) {
     List L = A->entries[i];
+    moveFront(L);
     if (length(L) > 0) {
-      for (moveFront(L); index(L) != -1; moveNext(L)) {
+      for (int j = 0; j < length(L); j++) {
         changeEntry(B, i, ((Entry)get(L))->col, ((Entry)get(L))->val * x);
+	moveNext(L);
       }
     }
   }
@@ -235,12 +246,15 @@ Matrix scalarMult(double x, Matrix A) {
 
 //helper function for sum()
 Matrix sum_helper(Matrix A, Matrix B, bool add) {
-  if (size(A) != size(B)) {
-    fprintf(stderr, "ERROR: issue in sum()\n");
-    exit(EXIT_FAILURE);
+  bool meow = false;
+  if(size(A) == size(B)){
+	  meow = true;
+  }
+  if (meow == false) {
+    exit(-1);
   }
   Matrix m = newMatrix(size(B));
-  for (int i = 1; i <= size(A); i++) {
+  for (int i = 1; i < size(A)+1; i++) {
     List LA = A->entries[i];
     List LB = B->entries[i];
     moveFront(LA);
@@ -301,23 +315,24 @@ Matrix diff(Matrix A, Matrix B) {
 // helper function for product()
 double vectorDot(List P, List Q) {
   double dot = 0;
-  if (length(P) > 0) {
+  if (length(P) >0) {
     moveFront(P);
   }
   if (length(Q) > 0) {
     moveFront(Q);
   }
-  while (index(P) != -1 && index(Q) != -1) {
+  while (index(P) >=0 && index(Q) >=0) {
     if (((Entry)get(P))->col == ((Entry)get(Q))->col) {
-      dot = dot +(((Entry)get(P))->val * ((Entry)get(Q))->val);
+	double temp = (((Entry)get(P))->val*((Entry)get(Q))->val);
+      dot = dot +temp;
       moveNext(P);
       moveNext(Q);
     } 
-    else if (((Entry)get(P))->col < ((Entry)get(Q))->col) {
-      moveNext(P);
+    else if(((Entry)get(P))->col > ((Entry)get(Q))->col) {
+      moveNext(Q);
     }
     else {
-      moveNext(Q);
+      moveNext(P);
     }
   }
   return dot;
@@ -326,16 +341,19 @@ double vectorDot(List P, List Q) {
 // Returns a reference to a new Matrix object representing AB
 // pre: size(A)==size(B)
 Matrix product(Matrix A, Matrix B) {
-  if (size(A) != size(B)) {
-    fprintf(stderr, "ERROR: error in sum\n");
-    exit(EXIT_FAILURE);
+  bool meow = false;
+  if(size(A) == size(B)){
+		  meow = true;
+  }
+  if (meow == false) {
+    exit(-1);
   }
   Matrix C = newMatrix(size(A));
   Matrix TB = transpose(B);
-  for (int i = 1; i <= size(A); i++) { 
+  for (int i = 1; i < size(A)+1; i++) { 
     List LA = A->entries[i];
     if (length(LA) > 0) {
-      for (int j = 1; j <= size(TB); j++) { 
+      for (int j = 1; j < size(TB)+1; j++) { 
         List LTB = TB->entries[j];
         if (length(LTB) > 0) {
           double dot = vectorDot(LA, LTB);
