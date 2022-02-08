@@ -28,22 +28,18 @@ int main() {
   fprintf(stdout, "%d\n", NNZ(M));
   printMatrix(stdout, M);
 
-
   //test copy
   Matrix B = copy(M);
   Matrix C = transpose(B);
-  fprintf(stdout, "%d\n", NNZ(C));
   printMatrix(stdout, C);
 
 
   //test scalar multiplication
   Matrix D = scalarMult(1.5, C);
-  fprintf(stdout, "%d\n", NNZ(D));
   printMatrix(stdout, D);
 
   //test product
   Matrix F = product(M, B);
-  fprintf(stdout, "%d\n", NNZ(F));
   printMatrix(stdout, F);
 
   //free everything
