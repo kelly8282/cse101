@@ -25,13 +25,18 @@ int main() {
   changeEntry(M, 3, 3, 9);
 
   //check non zero entries
-  fprintf(stdout, "%d\n", NNZ(M));
+  fprintf(stdout, "NNZ: %d\n", NNZ(M));
   printMatrix(stdout, M);
 
+  
   //test copy
   Matrix B = copy(M);
   Matrix C = transpose(B);
   printMatrix(stdout, C);
+
+   //test sum
+  fprintf(stdout,"Sum: %d\n", sum(M,C));
+  fprintf(stdout,"Diff: %d\n", diff(M,C));
 
 
   //test scalar multiplication
