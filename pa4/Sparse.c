@@ -7,7 +7,7 @@
 
 #include "List.h"
 #include "Matrix.h"
-
+#include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -39,17 +39,19 @@ int main(int argc, char *argv[]) {
 
    }
 
-  int n, a, b;
-  if (!feof(in)) { // read n, a, and b
-    fscanf(in, "%d %d %d\n\n", &n, &a, &b);
-  }
+  int n; 
+  int a;
+  int b;
+  fscanf(in, "%d %d %d\n\n", &n, &a, &b);
 
   Matrix A = newMatrix(n);
   int i, j;
   double x;
+  int count = 0;
   for (int k = 0; k < a; k++) { // read entries for A
-    fscanf(in, "%d %d %lf\n", &i, &j, &x);
-    changeEntry(A, i, j, x);
+  	fscanf(in, "%d %d %lf\n", &i, &j, &x);
+   	changeEntry(A, i, j, x);
+	count = count + 1;
   }
 
   fscanf(in, "\n");
