@@ -382,10 +382,12 @@ void printMatrix(FILE *out, Matrix M) {
     if (length(L) > 0) {
       fprintf(out, "%d: ", i);
       moveFront(L);
-      for (int j = 1; j <= length(L); j++) {
-        fprintf(out, "(%d, %.1f) ", ((Entry)get(L))->col, ((Entry)get(L))->val);
-        moveNext(L);
-      }
+      while(index(L) >= 0){
+            if(((Entry)get(L))->val != 0){
+                fprintf(out, " (%d, %.1f)", ((Entry)get(L))->col, ((Entry)get(L))->val);
+            }
+            moveNext(L);
+       }
       fprintf(out, "\n");
     }
   }
