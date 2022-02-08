@@ -31,13 +31,7 @@ int main() {
 
   //test copy
   Matrix B = copy(M);
-//test non zero entries
-  fprintf(stdout, "%d\n", NNZ(B));
-  printMatrix(stdout, B);
-
-
-  //transpose matrix and test non zero entries
-  Matrix C = transpose(M);
+  Matrix C = transpose(B);
   fprintf(stdout, "%d\n", NNZ(C));
   printMatrix(stdout, C);
 
@@ -52,20 +46,12 @@ int main() {
   fprintf(stdout, "%d\n", NNZ(F));
   printMatrix(stdout, F);
 
-
-  //test copy
-  Matrix G = copy(F);
-  if (equals(G, F)) {
-    fprintf(stdout, "equals\n");
-  }
-
   //free everything
   freeMatrix(&M);
   freeMatrix(&B);
   freeMatrix(&C);
   freeMatrix(&D);
   freeMatrix(&F);
-  freeMatrix(&G);
 
   return 0;
 }
