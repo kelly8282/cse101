@@ -27,25 +27,32 @@ int main() {
   //check non zero entries
   fprintf(stdout, "NNZ: %d\n", NNZ(M));
   printMatrix(stdout, M);
-
+  fprintf(stdout,"\n");
   
   //test copy
   Matrix B = copy(M);
   Matrix C = transpose(B);
   printMatrix(stdout, C);
+fprintf(stdout,"\n");
 
-   //test sum
-  fprintf(stdout,"Sum: %d\n", sum(M,C));
-  fprintf(stdout,"Diff: %d\n", diff(M,C));
+   //test sum and diff
+  Matrix summ = sum(M,C);
+  Matrix difff = diff(M,C);
+  printMatrix(stdout,summ);
+fprintf(stdout,"\n");
 
+  printMatrix(stdout,difff);
+fprintf(stdout,"\n");
 
   //test scalar multiplication
   Matrix D = scalarMult(1.5, C);
   printMatrix(stdout, D);
+fprintf(stdout,"\n");
 
   //test product
   Matrix F = product(M, B);
   printMatrix(stdout, F);
+fprintf(stdout,"\n");
 
   //free everything
   freeMatrix(&M);
@@ -53,6 +60,8 @@ int main() {
   freeMatrix(&C);
   freeMatrix(&D);
   freeMatrix(&F);
+  freeMatrix(&summ);
+  freeMatrix(&difff);
 
   return 0;
 }
