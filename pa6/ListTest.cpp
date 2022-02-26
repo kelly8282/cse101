@@ -16,7 +16,7 @@ int main(){
 	List A;
 
 	//test insertAfter and insertBefore
-	for(int i=0; i< 5; i++){
+	for(long i=0; i< 5; i++){
 		A.insertAfter(i);
 	}
 	A.insertBefore(4);
@@ -27,12 +27,12 @@ int main(){
 	//test cursor position manipulation functions
 	A.moveFront();
 	cout << "A.position() = " << A.position() << endl;
-	int meow = A.moveNext();
+	long meow = A.moveNext();
 	cout << meow << endl;
 	cout << "A.position() = " << A.position() << endl;
 	A.moveBack();
 	cout << "A.position() = " << A.position() << endl;
-	int woof = A.movePrev();
+	long woof = A.movePrev();
 	cout << woof << endl;
 	cout << "A.position() = " << A.position() << endl;
 	cout << endl;
