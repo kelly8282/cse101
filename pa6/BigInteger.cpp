@@ -353,13 +353,13 @@ std::string BigInteger::to_string(){
 		bla = 1;
                 str = str + std::to_string(cat);
             } 
-	    else if(len != power){
+	    else if(len !=(uint)power){
                 for(uint i = 0; i < power - len; i++){
                     str = str+ "0";
                 }
                 str = str + std::to_string(cat);
             } 
-	    else if(len == power){
+	    else if(len == (uint)power){
                 str = str + std::to_string(cat);
             }
         }
