@@ -68,6 +68,7 @@ BigInteger::BigInteger(std::string s){
 }
 
 
+
 // Constructor that creates a copy of N.
 BigInteger::BigInteger(const BigInteger& N){
 	this->digits = List(N.digits);
