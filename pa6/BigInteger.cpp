@@ -13,8 +13,8 @@
 #include "List.h"
 
 
-int power = 2;
-long base = 10^(power);
+int power = 9;
+long base = 1000000000;
 
    // Constructor that creates a new BigInteger in the zero state:
    // signum=0, digits=().
@@ -163,7 +163,7 @@ BigInteger BigInteger::add(const BigInteger& N) const{
 		return result;
 	}
 	meow.negate();
-	if(meow.sign() != gr.sign()){
+	if(meow.sign() == gr.sign()){
 		if(meow.compare(gr) ==  0){
 			meow.negate();
 			result.signum = 0;
@@ -310,7 +310,7 @@ BigInteger BigInteger::mult(const BigInteger& N) const{
                     p = p -  (dog * base);
             } else if(p <= (-1 * base)){
                     dog = p / (-1 * base);
-                    p = p + (dog * (-1 * base));
+                    p = p + (dog * (base));
             }
             meow.digits.insertAfter(p);
             cat = dog;
@@ -444,3 +444,4 @@ BigInteger operator*=( BigInteger& A, const BigInteger& B ){
         A = A.mult(B);
         return A;
 }
+
