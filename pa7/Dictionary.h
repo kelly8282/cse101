@@ -93,6 +93,8 @@ private:
    // Node, or is nil, returns nil.
    Node* findPrev(Node* N);
 
+   void transplant(Node *u, Node *v);
+
 public:
 
    // Class Constructors & Destructors ----------------------------------------
@@ -150,7 +152,6 @@ public:
    // otherwise inserts the new pair (k, v).
    void setValue(keyType k, valType v);
 
-   void transplant(Node *u, Node *v);
    // remove()
    // Deletes the pair for which key==k. If that pair is current, then current
    // becomes undefined.
