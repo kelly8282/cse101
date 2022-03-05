@@ -21,21 +21,22 @@ int main(int argc, char * argv[]){
    string tokenBuffer;
    string token;
 
+   //checking arguments
    if( argc != 3 ){
       cerr << "Usage: " << argv[0] << " <input file> <output file>" << endl;
-      return(EXIT_FAILURE);
+      return(-1);
    }
 
    in.open(argv[1]);
-   if( !in.is_open() ){
+   if( in.is_open() == false ){
       cerr << "Unable to open file " << argv[1] << " for reading" << endl;
-      return(EXIT_FAILURE);
+      return(-1);
    }
 
    out.open(argv[2]);
-   if( !out.is_open() ){
+   if( out.is_open() == false ){
       cerr << "Unable to open file " << argv[2] << " for writing" << endl;
-      return(EXIT_FAILURE);
+      return(-1);
    }
    Dictionary cat = Dictionary();
    std::string meow = "";
@@ -46,7 +47,7 @@ int main(int argc, char * argv[]){
        } else if(meow == ""){
 	       break;
        }
-       i++;
+       i = i +1;
    }
    out << cat << endl;
 
@@ -56,6 +57,6 @@ int main(int argc, char * argv[]){
    in.close();
    out.close();
 
-   return(EXIT_SUCCESS);
+   return(1);
 }
 

@@ -39,6 +39,7 @@ Dictionary::~Dictionary(){
 	delete(nil);
 }
 
+   // Helper Functions (Optional) ---------------------------------------------
 void Dictionary::inOrderString(std::string& s, Node *R) const{
 	if( R != nil && R != NULL){
 		inOrderString(s,R->left);
@@ -69,7 +70,7 @@ void Dictionary::preOrderCopy(Node *R, Node *N){
 }
 
 void Dictionary::postOrderDelete(Node *R){
-	if(R == nil){
+	if(R == nil || R == NULL){
 		return;
 	}
 	else if(R == root){
@@ -139,10 +140,14 @@ Dictionary::Node *Dictionary::findPrev(Node *N){
 	return dog;
 }
 
+   // Returns the size of this Dictionary.
 int Dictionary::size() const{
     return num_pairs;
 }
 
+
+   // Returns true if there exists a pair such that key==k, and returns false
+   // otherwise.
 bool Dictionary::contains(keyType k) const{
 	if( search(root,k) != nil){
 		return true;
@@ -152,6 +157,8 @@ bool Dictionary::contains(keyType k) const{
 	}
 }
 
+
+   // Returns a reference to the value corresponding to key k.
 valType &Dictionary::getValue(keyType k) const{
 	Node *meow = search(root,k);
 	if(meow != nil){
@@ -163,6 +170,8 @@ valType &Dictionary::getValue(keyType k) const{
 	return nil->val;
 }
 
+   // Returns true if the current iterator is defined, and returns false 
+   // otherwise.
 bool Dictionary::hasCurrent() const{
 	if (current != nil){
 		return true;
@@ -172,6 +181,7 @@ bool Dictionary::hasCurrent() const{
 	}
 }
 
+   // Returns the current key.
 keyType Dictionary::currentKey() const{
     if( hasCurrent() == true){
         return current->key;
@@ -182,6 +192,7 @@ keyType Dictionary::currentKey() const{
     return nil->key;
 }
 
+   // Returns a reference to the current value.
 valType &Dictionary::currentVal() const{
     if(hasCurrent() == true){
         return current->val;
@@ -192,6 +203,7 @@ valType &Dictionary::currentVal() const{
     return nil->val;
 }
 
+   // Resets this Dictionary to the empty state, containing no pairs.
 void Dictionary::clear(){
     postOrderDelete(root);
     num_pairs = 0;
@@ -247,6 +259,7 @@ void Dictionary::transplant(Node *u, Node *v){
     }
 }
 
+
 //pseudocode provided
 void Dictionary::remove(keyType k){
     if(contains(k) == false){
@@ -277,18 +290,26 @@ void Dictionary::remove(keyType k){
     num_pairs = num_pairs -1;
 }
 
+  // If non-empty, places current iterator at the first (key, value) pair
+   // (as defined by the order operator < on keys), otherwise does nothing.
 void Dictionary::begin(){
     if(size() > 0){
         current = findMin(root);
     }
 }
 
+   // If non-empty, places current iterator at the last (key, value) pair
+   // (as defined by the order operator < on keys), otherwise does nothing.
 void Dictionary::end(){
     if(size() > 0){
         current = findMax(root);
     }
 }
 
+
+   // If the current iterator is not at the last pair, advances current
+   // to the next pair (as defined by the order operator < on keys). If
+   // the current iterator is at the last pair, makes current undefined.
 void Dictionary::next(){
     if(hasCurrent() == false){
 	    throw std::logic_error("Dictionary: next(): current not defined");
@@ -301,6 +322,10 @@ void Dictionary::next(){
     }
 }
 
+
+   // If the current iterator is not at the first pair, moves current to
+   // the previous pair (as defined by the order operator < on keys). If
+   // the current iterator is at the first pair, makes current undefined.
 void Dictionary::prev(){
     if(hasCurrent() == false){
 	    throw std::logic_error("Dictionary: prev(): current not defined");
@@ -313,18 +338,28 @@ void Dictionary::prev(){
     }
 }
 
+   // Returns a string representation of this Dictionary. Consecutive (key, value)
+   // pairs are separated by a newline "\n" character, and the items key and value
+   // are separated by the sequence space-colon-space " : ". The pairs are arranged
+   // in order, as defined by the order operator <.
 std::string Dictionary::to_string() const{
     std::string s = "";
     inOrderString(s, root);
     return s;
 }
 
+
+   // Returns a string consisting of all keys in this Dictionary. Consecutive
+   // keys are separated by newline "\n" characters. The key order is given
+   // by a pre-order tree walk.
 std::string Dictionary::pre_string() const{
     std::string s = "";
     preOrderString(s, root);
     return s;
 }
 
+   // Returns true if and only if this Dictionary contains the same (key, value)
+   // pairs as Dictionary D.
 bool Dictionary::equals(const Dictionary &D) const{
     Dictionary meow = *this;
     Dictionary gr = D;
@@ -343,15 +378,21 @@ bool Dictionary::equals(const Dictionary &D) const{
     return true;
 }
 
+
+   // Inserts string representation of Dictionary D into stream, as defined by
+   // member function to_string().
 std::ostream& operator<<( std::ostream& stream, Dictionary& D ){
     return stream << D.Dictionary::to_string();
 }
-
+   // Returns true if and only if Dictionary A equals Dictionary B, as defined
+   // by member function equals(). 
 bool operator==( const Dictionary& A, const Dictionary& B ){
     return A.Dictionary::equals(B);
 }
 
-Dictionary& Dictionary::operator=( const Dictionary& D ){ //need to change
+   // Overwrites the state of this Dictionary with state of D, and returns a
+   // reference to this Dictionary.
+Dictionary& Dictionary::operator=( const Dictionary& D ){ 
     if(this != &D){
         if(num_pairs > 0){
             postOrderDelete(root);

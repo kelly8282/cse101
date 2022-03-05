@@ -17,12 +17,14 @@ int main(){
 	Dictionary A = Dictionary();
 	Dictionary B = Dictionary();
 
+	//setting value
 	for(int i=0; i<8; i++){
      		A.setValue(S[i], i+1);
    	}
 
 	B = A;
 
+	//test size
 	cout << A.size() << endl << A << endl;
 	cout << B.size() << endl << B << endl << endl;
 
@@ -32,6 +34,7 @@ int main(){
 
 	cout << "B bar value: " << B.getValue("bar") << endl;
 
+	//test equals
 	cout << (A==B?"true":"false") << endl;
 
 	cout << endl;
